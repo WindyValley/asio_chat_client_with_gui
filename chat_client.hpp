@@ -14,7 +14,6 @@
 #include <thread>
 #include <boost/asio.hpp>
 #include "chat_message.hpp"
-#include <gtk/gtk.h>
 
 using boost::asio::ip::tcp;
 using namespace boost::asio;
