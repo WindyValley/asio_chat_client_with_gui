@@ -80,6 +80,6 @@ void handler(boost::system::error_code ec, std::size_t length)
 	}
 	else
 	{
-		client->socket_.close();
+		close();
 	}
 }
