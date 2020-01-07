@@ -7,7 +7,7 @@ char* _(const char* c)
 
 Login::Login()
 {
-    initdialog((char*)"µÇÂ¼");
+    initdialog((char*)"ç™»å½•");
     initcontrol();
     initlayout();
 }
@@ -25,22 +25,22 @@ void Login::initdialog(char* title)
 {
 	dialog = gtk_dialog_new();
 	gtk_window_set_default_size(GTK_WINDOW(dialog),240,160);
-	gtk_window_set_title(GTK_WINDOW(dialog),_("Á¬½Ó"));
+	gtk_window_set_title(GTK_WINDOW(dialog),_("è¿æ¥"));
 	gtk_window_set_position(GTK_WINDOW(dialog),GTK_WIN_POS_CENTER);
 }
 
 void Login::initcontrol()
 {
-    //°´Å¥
+    //æŒ‰é’®
 	cnbutton=gtk_button_new();
-	gtk_button_set_label(GTK_BUTTON(cnbutton),_("Á¬½Ó"));
+	gtk_button_set_label(GTK_BUTTON(cnbutton),_("è¿æ¥"));
     ccbutton=gtk_button_new();
-    gtk_button_set_label(GTK_BUTTON(ccbutton),_("È¡Ïû"));
-	//±êÇ©
+    gtk_button_set_label(GTK_BUTTON(ccbutton),_("å–æ¶ˆ"));
+	//æ ‡ç­¾
 	label1=gtk_label_new("IP:");
 	label2=gtk_label_new("Port:");
 
-	//ÊäÈë¿ò
+	//è¾“å…¥æ¡†
 	iptext=gtk_entry_new();
 	gtk_entry_set_placeholder_text(GTK_ENTRY(iptext),_("server's ip"));
 	porttext=gtk_entry_new();

@@ -40,7 +40,7 @@ void cb_cnbutton(GtkWidget *widget, gpointer data)
 	ipgetted=true;
 	login->destroy();
 	win->show();
-	std::thread t([&ioc]() {
+	std::thread t([]() {
 		ioc.run();
 	});
 	t.detach();
