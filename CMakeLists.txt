@@ -20,6 +20,7 @@ find_package(Boost REQUIRED COMPONENTS
 )
 include_directories(${Boost_INCLUDE_DIRS})
 list(APPEND FC_DEP_LIBS ${Boost_LIBRARIES})
+
 add_executable(chat_client
     main.cpp
     Login.cpp
