@@ -9,6 +9,7 @@ public:
 	GtkWidget* window;
 	GtkWidget* snd_button, * snd_msg, * recv_msgs;
 	GtkWidget* fixed;
+	GtkWidget* scroll;
 	GtkTextBuffer* buffer;
 public:
 	Window(char* title);

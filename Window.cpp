@@ -52,12 +52,17 @@ void Window::initlayout()
 	//button
 	gtk_fixed_put(GTK_FIXED(fixed), snd_button, 540, 0);
 	gtk_widget_set_size_request(snd_button, 70, 40);
+	//{{{scorll start
+	scroll = gtk_scrolled_window_new(NULL,NULL);
 	//recv_msgs
-	gtk_fixed_put(GTK_FIXED(fixed), recv_msgs, 0, 45);
-	gtk_widget_set_size_request(recv_msgs, 610, 355);
 	gtk_text_view_set_editable(GTK_TEXT_VIEW(recv_msgs), FALSE);
-	//fixed end}}}
 	gtk_container_add(GTK_CONTAINER(window), fixed);
+	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scroll),recv_msgs);
+	//scorll end}}}
+	gtk_fixed_put(GTK_FIXED(fixed), scroll, 0, 45);
+	gtk_widget_set_size_request(scroll, 610, 355);
+	//fixed end}}}
+
 }
 void Window::show()
 {
