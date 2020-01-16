@@ -1,14 +1,6 @@
 {
     "tasks": [
-        {
-            "type": "shell",
-            "label": "cmake build active file",
-            "command": "/usr/bin/cmake",
-            "args": [
-                "--build",
-                "${fileDirname}/build"
-            ]
-        }
+       
     ],
     "version": "2.0.0"
 }
