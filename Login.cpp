@@ -25,7 +25,7 @@ void Login::initdialog(char* title)
 {
 	dialog = gtk_dialog_new();
 	gtk_window_set_default_size(GTK_WINDOW(dialog),240,160);
-	gtk_window_set_title(GTK_WINDOW(dialog),_("连接"));
+	gtk_window_set_title(GTK_WINDOW(dialog),title);
 	gtk_window_set_position(GTK_WINDOW(dialog),GTK_WIN_POS_CENTER);
 }
 
@@ -33,18 +33,18 @@ void Login::initcontrol()
 {
     //按钮
 	cnbutton=gtk_button_new();
-	gtk_button_set_label(GTK_BUTTON(cnbutton),_("连接"));
+	gtk_button_set_label(GTK_BUTTON(cnbutton),"连接");
     ccbutton=gtk_button_new();
-    gtk_button_set_label(GTK_BUTTON(ccbutton),_("取消"));
+    gtk_button_set_label(GTK_BUTTON(ccbutton),"取消");
 	//标签
 	label1=gtk_label_new("IP:");
 	label2=gtk_label_new("Port:");
 
 	//输入框
 	iptext=gtk_entry_new();
-	gtk_entry_set_placeholder_text(GTK_ENTRY(iptext),_("server's ip"));
+	gtk_entry_set_placeholder_text(GTK_ENTRY(iptext),"server's ip");
 	porttext=gtk_entry_new();
-	gtk_entry_set_placeholder_text(GTK_ENTRY(iptext),_("server's port"));
+	gtk_entry_set_placeholder_text(GTK_ENTRY(iptext),"server's port");
 }
 
 void Login::initlayout()
