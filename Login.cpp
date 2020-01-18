@@ -68,7 +68,7 @@ void Login::initlayout()
     gtk_fixed_put(GTK_FIXED(fixed),ccbutton,135,100);
 	gtk_widget_set_size_request(ccbutton,75,40);
 	//fixed end}}}
-	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))),fixed,false,true,0);
+	gtk_dialog_add_action_widget(GTK_DIALOG(dialog),fixed,0);
 }
 
 void Login::show()
