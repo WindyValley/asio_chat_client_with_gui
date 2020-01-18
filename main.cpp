@@ -20,10 +20,12 @@ int main(int argc, char** argv)
 	login = new Login();
 	std::thread loop([]() {
 		login->show_all();
-		if(login->run()==RESPONSE_APPLY)
-			cb_cnbutton();
-		else
-			return;		
+		do{
+			if(login->run()==RESPONSE_APPLY)
+				cb_cnbutton();
+			else
+				return;
+		}while(!ipgetted);
 		login->close();
 		win->show_all();
 		app->run(*win);
@@ -41,6 +43,11 @@ void cb_cnbutton()
 		client = new chat_client(ioc, endpoint);
 	else
 		client->do_connect(endpoint);
+	ioc.run_one();
+	while(!client->tried_connect);
+	ioc.restart();
+	client->tried_connect=false;
+	if(client->connect_result)return;
 	ipgetted=true;
 	std::thread t([]() {
 		ioc.run();
