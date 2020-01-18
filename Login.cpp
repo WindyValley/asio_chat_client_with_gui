@@ -9,9 +9,10 @@ Login::Login()
 
 Login::~Login()
 {
+	delete label1;
+	delete label2;
     delete iptext;
     delete porttext;
-    delete cnbutton;
     delete fixed;
 }
 
@@ -25,9 +26,8 @@ void Login::initdialog(char* title)
 void Login::initcontrol()
 {
     //按钮
-	cnbutton=new Button("连接");
-    ccbutton=new Button("取消");
-	ccbutton->signal_clicked().connect(sigc::mem_fun0(*this,Window::close));
+	add_button("连接",RESPONSE_APPLY);
+	add_button("取消",RESPONSE_CANCEL);
 	//标签
 	label1=new Label("IP:");
 	label2=new Label("Port:");
@@ -55,6 +55,4 @@ void Login::initlayout()
 	porttext->set_size_request(160,40);
 	//fixed end}}}
 	this->get_vbox()->add(*fixed);
-	add_button("连接",RESPONSE_APPLY);
-	add_button("取消",RESPONSE_CANCEL);
 }

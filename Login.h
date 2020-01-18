@@ -15,7 +15,6 @@ public:
 public:
     Label *label1,*label2;
     Entry *iptext, *porttext;
-    Button *cnbutton, *ccbutton;
     Fixed *fixed;
 };
 #endif // LOGIN_H_INCLUDED
