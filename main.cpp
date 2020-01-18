@@ -50,9 +50,7 @@ void cb_button(GtkWidget* widget, gpointer entry)
 {
 	const char* line = gtk_entry_get_text(GTK_ENTRY(entry));
 	chat_message msg;
-	size_t len=std::strlen(line);
-	if(len==0) return;
-	msg.body_length(len);
+	msg.body_length(std::strlen(line));
 	std::memcpy(msg.body(), line, msg.body_length());
 	msg.encode_header();
 	client->write(msg);
