@@ -36,15 +36,7 @@ void cb_cnbutton(GtkWidget *widget, gpointer data)
 	GtkEntry *ip=GTK_ENTRY(login->iptext);
 	GtkEntry *port=GTK_ENTRY(login->porttext);
 	auto endpoint = rs.resolve(gtk_entry_get_text(ip), gtk_entry_get_text(port));
-	if(client==nullptr)
-		client = new chat_client(ioc, endpoint);
-	else
-		client->do_connect(endpoint);
-	ioc.run_one();
-	while(!client->tried_connect);
-	ioc.restart();
-	client->tried_connect=false;
-	if(client->connect_result)return;
+	client = new chat_client(ioc, endpoint);
 	ipgetted=true;
 	login->destroy();
 	win->show();
