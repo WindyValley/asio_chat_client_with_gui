@@ -28,7 +28,8 @@ public:
 	chat_client(io_context& io_context,
 		const tcp::resolver::results_type& endpoints)
 		: io_context_(io_context),
-		socket_(io_context)
+		socket_(io_context),
+		tried_connect(false)
 	{
 		do_connect(endpoints);
 	}
@@ -58,6 +59,7 @@ public:
 			[this](boost::system::error_code ec, tcp::endpoint)
 		{
 			connect_result=ec;
+			tried_connect=true;
 			if (!ec)
 			{
 				do_read_header();
@@ -116,5 +118,6 @@ public:
 	chat_message read_msg_;
 	chat_message_queue write_msgs_;
 	boost::system::error_code connect_result;
+	bool tried_connect;
 };
 
