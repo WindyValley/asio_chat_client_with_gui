@@ -1,54 +1,63 @@
-#include "Window.h"
+#include "ChatWin.h"
 #include "Login.h"
 
-void cb_button(GtkWidget* widget, gpointer entry);
-void cb_cnbutton(GtkWidget* widget,gpointer win);
-void close();
-void exit();
+void cb_button();
+void cb_cnbutton();
+bool exit_(GdkEventAny *);
 
 chat_client* client=nullptr;
-Window* win;
+ChatWin* win;
 Login *login;
 io_context ioc;
 tcp::resolver rs(ioc);
 bool ipgetted=false;
+Glib::RefPtr<Application> app;
 
 int main(int argc, char** argv)
 {
-	gtk_init(&argc, &argv);
-	win = new Window((char*)"chat");
+	app=Application::create(argc,argv);
+	win = new ChatWin((char*)"chat");
 	login = new Login();
 	std::thread loop([]() {
-		login->show();
-		gtk_main();
+		login->show_all();
+		do{
+			if(login->run()==RESPONSE_APPLY)
+				cb_cnbutton();
+			else
+				return;
+		}while(!ipgetted);
+		login->close();
+		win->show_all();
+		app->run(*win);
 	});
-	g_signal_connect(G_OBJECT(win->window), "delete_event", G_CALLBACK(close), NULL);
-	g_signal_connect(G_OBJECT(login->dialog), "delete_event", G_CALLBACK(exit), NULL);
-	g_signal_connect(G_OBJECT(win->snd_button), "clicked", G_CALLBACK(cb_button), win->snd_msg);
-	g_signal_connect(G_OBJECT(login->cnbutton), "clicked", G_CALLBACK(cb_cnbutton),NULL);
-	g_signal_connect(G_OBJECT(login->ccbutton), "clicked", G_CALLBACK(exit), NULL);
+	win->signal_delete_event().connect(sigc::ptr_fun(exit_));
+	win->snd_button.signal_clicked().connect(sigc::ptr_fun(cb_button));
 	loop.join();
 	return 0;
 }
 
-void cb_cnbutton(GtkWidget *widget, gpointer data)
+void cb_cnbutton()
 {
-	GtkEntry *ip=GTK_ENTRY(login->iptext);
-	GtkEntry *port=GTK_ENTRY(login->porttext);
-	auto endpoint = rs.resolve(gtk_entry_get_text(ip), gtk_entry_get_text(port));
-	client = new chat_client(ioc, endpoint);
+	auto endpoint = rs.resolve(login->iptext->get_text(),login->porttext->get_text());
+	if(client == nullptr)
+		client = new chat_client(ioc, endpoint);
+	else
+		client->do_connect(endpoint);
+	ioc.run_one();
+	while(!client->tried_connect);
+	ioc.restart();
+	client->tried_connect=false;
+	if(client->connect_result)return;
 	ipgetted=true;
-	login->destroy();
-	win->show();
 	std::thread t([]() {
 		ioc.run();
 	});
 	t.detach();
 }
 
-void cb_button(GtkWidget* widget, gpointer entry)
+void cb_button()
 {
-	const char* line = gtk_entry_get_text(GTK_ENTRY(entry));
+	const char* line = win->snd_msg.get_text().c_str();
 	chat_message msg;
 	size_t len=std::strlen(line);
 	if(len==0) return;
@@ -58,30 +67,27 @@ void cb_button(GtkWidget* widget, gpointer entry)
 	client->write(msg);
 }
 
-void close()
-{
-	client->close();
-	gtk_main_quit();
-}
-
-void exit()
-{
-	if(!ipgetted)
-		gtk_main_quit();
-}
-
 void handler(boost::system::error_code ec, std::size_t length)
 {
 	if (!ec)
 	{
-		GtkTextIter start, end;
-		gtk_text_buffer_get_bounds(win->buffer, &start, &end);
-		gtk_text_buffer_insert(win->buffer, &end, client->read_msg_.body(), client->read_msg_.body_length());
-		gtk_text_buffer_insert(win->buffer, &end, "\n", 1);
+		TextBuffer::iterator start, end;
+		win->buffer->get_bounds(start, end);
+		win->buffer->insert(end, Glib::ustring(client->read_msg_.body(), client->read_msg_.body_length()));
+		win->buffer->get_bounds(start, end);
+		win->buffer->insert(end, "\n");
 		client->do_read_header();
 	}
 	else
 	{
-		close();
+		client->close();
 	}
+}
+
+bool exit_(GdkEventAny* event)
+{
+	client->close();
+	win->close();
+	app->quit();
+	return ipgetted;
 }

@@ -1,25 +1,20 @@
 #ifndef LOGIN_H_INCLUDED
 #define LOGIN_H_INCLUDED
 
-#include <gtk/gtk.h>
+#include <gtkmm.h>
+using namespace Gtk;
 
-char* _(char* c);
-
-class Login
+class Login:public Dialog
 {
 public:
     Login();
     ~Login();
-    void show();
-    void destroy();
 	void initdialog(char* title);
 	void initcontrol();
 	void initlayout();
 public:
-    GtkWidget *dialog;
-    GtkWidget *label1,*label2;
-    GtkWidget *iptext, *porttext;
-    GtkWidget *cnbutton, *ccbutton;
-    GtkWidget *fixed;
+    Label *label1,*label2;
+    Entry *iptext, *porttext;
+    Fixed *fixed;
 };
 #endif // LOGIN_H_INCLUDED
