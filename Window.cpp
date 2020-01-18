@@ -57,7 +57,7 @@ void Window::initlayout()
 	//recv_msgs
 	gtk_text_view_set_editable(GTK_TEXT_VIEW(recv_msgs), FALSE);
 	gtk_container_add(GTK_CONTAINER(window), fixed);
-	gtk_container_add(GTK_CONTAINER(scroll),recv_msgs);
+	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scroll),recv_msgs);
 	//scorll end}}}
 	gtk_fixed_put(GTK_FIXED(fixed), scroll, 0, 45);
 	gtk_widget_set_size_request(scroll, 610, 355);
