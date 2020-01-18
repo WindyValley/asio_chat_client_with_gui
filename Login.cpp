@@ -53,12 +53,8 @@ void Login::initlayout()
 	label2->set_size_request(80,40);
 	fixed->put(*porttext,80,50);
 	porttext->set_size_request(160,40);
-	//cnbutton
-	fixed->put(*cnbutton,30,100);
-	cnbutton->set_size_request(75,40);
-	//ccbutton
-    fixed->put(*ccbutton,135,100);
-	ccbutton->set_size_request(75,40);
 	//fixed end}}}
-	this->add(*fixed);
+	this->get_vbox()->add(*fixed);
+	add_button("连接",RESPONSE_APPLY);
+	add_button("取消",RESPONSE_CANCEL);
 }

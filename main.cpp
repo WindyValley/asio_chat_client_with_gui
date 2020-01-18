@@ -20,11 +20,16 @@ int main(int argc, char** argv)
 	login = new Login();
 	std::thread loop([]() {
 		login->show_all();
+		if(login->run()==RESPONSE_APPLY)
+			cb_cnbutton();
+		else
+			return;		
+		login->close();
+		win->show_all();
 		app->run(*win);
 	});
 	win->signal_delete_event().connect(sigc::ptr_fun(exit_));
 	win->snd_button.signal_clicked().connect(sigc::ptr_fun(cb_button));
-	login->cnbutton->signal_clicked().connect(sigc::ptr_fun(cb_cnbutton));
 	loop.join();
 	return 0;
 }
@@ -36,10 +41,7 @@ void cb_cnbutton()
 		client = new chat_client(ioc, endpoint);
 	else
 		client->do_connect(endpoint);
-	if(client->connect_result) return;
 	ipgetted=true;
-	login->close();
-	win->show_all();
 	std::thread t([]() {
 		ioc.run();
 	});

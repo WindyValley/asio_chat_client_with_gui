@@ -4,7 +4,7 @@
 #include <gtkmm.h>
 using namespace Gtk;
 
-class Login:public Window
+class Login:public Dialog
 {
 public:
     Login();
