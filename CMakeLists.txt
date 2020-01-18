@@ -27,5 +27,5 @@ find_package(Boost REQUIRED COMPONENTS
 )
 include_directories(${Boost_INCLUDE_DIRS})
 list(APPEND FC_DEP_LIBS ${Boost_LIBRARIES})
-
 target_link_libraries(chat_client PUBLIC ${FC_DEP_LIBS})
+target_link_options(chat_client PUBLIC "-mwindows")
