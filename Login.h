@@ -4,17 +4,18 @@
 #include <gtkmm.h>
 using namespace Gtk;
 
-class Login:public Dialog
+class Login : public Dialog
 {
 public:
-    Login();
-    ~Login();
-	void initdialog(char* title);
-	void initcontrol();
-	void initlayout();
+  Login();
+  ~Login();
+  void initdialog(char *title);
+  void initcontrol();
+  void initlayout();
+
 public:
-    Label *label1,*label2;
-    Entry *iptext, *porttext;
-    Fixed *fixed;
+  Label *label1, *label2;
+  Entry *iptext, *porttext;
+  Fixed *fixed;
 };
 #endif // LOGIN_H_INCLUDED
