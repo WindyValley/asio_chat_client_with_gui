@@ -27,7 +27,7 @@ public:
     max_body_length = 512
   };
 
-  chat_message() : body_length_(0), data_("") {}
+  chat_message() : data_(""), body_length_(0) {}
 
   const char *data() const { return data_; }
 
