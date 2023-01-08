@@ -18,22 +18,19 @@ int main(int argc, char **argv)
   app = Application::create(argc, argv);
   win = new ChatWin((char *)"chat");
   login = new Login();
-  std::thread loop([]() {
+  win->signal_delete_event().connect(sigc::ptr_fun(exit_));
+  win->snd_button.signal_clicked().connect(sigc::ptr_fun(cb_button));
   login->show_all();
   do
   {
     if (login->run() == RESPONSE_APPLY)
       cb_cnbutton();
     else
-        return;
+      return 1;
   } while (!ipgetted);
   login->close();
   win->show_all();
   app->run(*win);
-  });
-  win->signal_delete_event().connect(sigc::ptr_fun(exit_));
-  win->snd_button.signal_clicked().connect(sigc::ptr_fun(cb_button));
-  loop.join();
   return 0;
 }
 
@@ -59,7 +56,7 @@ void cb_cnbutton()
 
 void cb_button()
 {
-  auto&& line = win->snd_msg.get_text();
+  auto &&line = win->snd_msg.get_text();
   if (line.empty())
     return;
   chat_message msg;
