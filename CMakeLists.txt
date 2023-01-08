@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 aux_source_directory(. SRC_FILES)
+list(REMOVE_ITEM SRC_FILES ./chat_server.cpp)
 add_executable(chat_client ${SRC_FILES})
 
 find_package(PkgConfig REQUIRED)
@@ -32,3 +33,4 @@ target_link_libraries(chat_client PUBLIC ${FC_DEP_LIBS})
 if (WIN32)
     target_link_options(chat_client PUBLIC "-mwindows")
 endif()
+add_executable(chat_server chat_server.cpp)
