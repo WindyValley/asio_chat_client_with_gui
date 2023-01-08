@@ -19,17 +19,17 @@ int main(int argc, char **argv)
   win = new ChatWin((char *)"chat");
   login = new Login();
   std::thread loop([]() {
-    login->show_all();
-    do
-    {
-      if (login->run() == RESPONSE_APPLY)
-        cb_cnbutton();
-      else
+  login->show_all();
+  do
+  {
+    if (login->run() == RESPONSE_APPLY)
+      cb_cnbutton();
+    else
         return;
-    } while (!ipgetted);
-    login->close();
-    win->show_all();
-    app->run(*win);
+  } while (!ipgetted);
+  login->close();
+  win->show_all();
+  app->run(*win);
   });
   win->signal_delete_event().connect(sigc::ptr_fun(exit_));
   win->snd_button.signal_clicked().connect(sigc::ptr_fun(cb_button));
@@ -59,13 +59,12 @@ void cb_cnbutton()
 
 void cb_button()
 {
-  const char *line = win->snd_msg.get_text().c_str();
-  chat_message msg;
-  size_t len = std::strlen(line);
-  if (len == 0)
+  auto&& line = win->snd_msg.get_text();
+  if (line.empty())
     return;
-  msg.body_length(len);
-  std::memcpy(msg.body(), line, msg.body_length());
+  chat_message msg;
+  msg.body_length(line.length());
+  std::memcpy(msg.body(), line.c_str(), msg.body_length());
   msg.encode_header();
   client->write(msg);
 }
